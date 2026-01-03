@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/BAGPACK")
+const config = require("config");
+const dbgr = require("debug")("development:mongoose");
+mongoose.connect(`${config.get("MONGODB_URI")}/BAGPACK`)
 .then(()=>{
-    console.log("your db server is live");
+    dbgr("your db server is live");
 })
 .catch(function(err){
-    console.log(err);
+    dbgr(err);
 })
 module.exports = mongoose; 
