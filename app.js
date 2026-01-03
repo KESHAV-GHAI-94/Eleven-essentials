@@ -8,24 +8,22 @@ const BAGPACK = require("./config/BAGPACK-DB");
 const Products = require("./models/products");
 const  Users = require("./models/users");
 const Owners = require("./models/owners");
+const ownerRouter=require("./routes/ownersRouter");
+const userRouter=require("./routes/usersRouter");
+const productsRouter=require("./routes/productsRouter");
 
-const ownersRouter = require("./routes/ownersRouter");
-const productsRouter = require("./routes/productsRouter");
-const usersRouter = require("./routes/usersRouter");
 //middlewares
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname,"public")));
 // to routers
-app.use("/owners",ownersRouter);
-app.use("/users",usersRouter);
+app.use("/owners",ownerRouter);
 app.use("/products",productsRouter);
+app.use("/users",userRouter);
+
 // set ejs file
 app.set("view engine","ejs");
-
-
-
 
 app.get("/",(req,res)=>{
     res.send("happy new year");
