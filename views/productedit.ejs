@@ -1,0 +1,102 @@
+<%- include('./partials/header') %>
+
+<div class="min-h-screen flex justify-center items-start px-20 py-16">
+
+  <div class="w-full max-w-xl">
+    <h1 class="text-2xl font-semibold mb-6">Edit Product</h1>
+
+    <form
+      action="/owners/products/update/<%= product._id %>"
+      method="POST"
+      class="flex flex-col gap-4"
+    >
+
+      <!-- NAME -->
+      <div>
+        <label class="block mb-1">Product Name</label>
+        <input
+          type="text"
+          name="name"
+          value="<%= product.name %>"
+          class="w-full border px-3 py-2"
+          required
+        />
+      </div>
+
+      <!-- PRICE -->
+      <div>
+        <label class="block mb-1">Price</label>
+        <input
+          type="number"
+          name="price"
+          value="<%= product.price %>"
+          class="w-full border px-3 py-2"
+          required
+        />
+      </div>
+
+      <!-- DISCOUNT -->
+      <div>
+        <label class="block mb-1">Discount (%)</label>
+        <input
+          type="number"
+          name="discount"
+          value="<%= product.discount %>"
+          class="w-full border px-3 py-2"
+        />
+      </div>
+
+      <!-- COLORS -->
+      <div>
+        <label class="block mb-1">Background Color</label>
+        <input
+          type="text"
+          name="bgcolor"
+          value="<%= product.bgcolor %>"
+          class="w-full border px-3 py-2"
+        />
+      </div>
+
+      <div>
+        <label class="block mb-1">Panel Color</label>
+        <input
+          type="text"
+          name="panelcolor"
+          value="<%= product.panelcolor %>"
+          class="w-full border px-3 py-2"
+        />
+      </div>
+
+      <div>
+        <label class="block mb-1">Text Color</label>
+        <input
+          type="text"
+          name="textcolor"
+          value="<%= product.textcolor %>"
+          class="w-full border px-3 py-2"
+        />
+      </div>
+
+      <!-- BUTTONS -->
+      <div class="flex gap-4 mt-6">
+        <button
+          type="submit"
+          class="px-6 py-2 bg-black text-white"
+        >
+          Update Product
+        </button>
+
+        <a
+          href="/owners/products"
+          class="px-6 py-2 border"
+        >
+          Cancel
+        </a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<%- include('./partials/footer') %>

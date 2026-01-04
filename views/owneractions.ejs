@@ -1,0 +1,90 @@
+<%- include('./partials/header') %>
+
+<div class="w-full min-h-screen mt-10 flex px-20 py-10">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="w-[25%] pr-10 ">
+    <h2 class="text-xl font-semibold mb-6">Owner Panel</h2>
+
+    <div class="flex flex-col gap-3">
+      <a href="/owners/products" class="font-medium">📦 All Products</a>
+      <a href="/owners/create">➕ Add Product</a>
+      <a href="/owner/orders">🧾 Orders</a>
+      <a href="/owners/users">👥 Users</a>
+      <a href="/owner/analytics">📊 Analytics</a>
+    </div>
+  </div>
+
+  <!-- RIGHT CONTENT -->
+  <div class="w-[75%]">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-semibold">Manage Products</h1>
+      <a
+        href="/owners/create"
+        class="px-4 py-2 bg-black text-white rounded"
+      >
+        + Add Product
+      </a>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <div class="grid grid-cols-4 gap-6">
+
+      <% products.forEach(product => { %>
+        <div class="border rounded overflow-hidden">
+
+          <!-- IMAGE -->
+          <div class="h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+            <% if (product.images) { %>
+              <img
+                src="data:image/jpeg;base64,<%= product.images.toString('base64') %>"
+                class="w-40 h-40 object-cover"
+              />
+            <% } else { %>
+              <span class="text-sm text-gray-400">No Image</span>
+            <% } %>
+          </div>
+
+          <!-- DETAILS -->
+          <div class="p-4 bg-[<%= product.panelcolor %>] text-[<%= product.textcolor %>]">
+            <h3 class="font-semibold"><%= product.name %></h3>
+            <p>₹ <%= product.price %></p>
+
+            <% if (product.discount > 0) { %>
+              <p class="text-sm text-green-600">
+                Discount: <%= product.discount %>%
+              </p>
+            <% } %>
+          </div>
+
+          <!-- OWNER ACTIONS -->
+          <div class="flex justify-between items-center px-4 py-3 border-t">
+
+            <a
+              href="/owners/products/edit/<%= product._id %>"
+              class="text-blue-600 text-sm"
+            >
+              ✏️ Edit
+            </a>
+
+            <form
+              action="products/delete/<%= product._id %>"
+              method="POST"
+              onsubmit="return confirm('Delete this product?')"
+            >
+              <button class="text-red-600 text-sm">🗑️ Delete</button>
+            </form>
+
+          </div>
+
+        </div>
+      <% }) %>
+
+    </div>
+
+  </div>
+</div>
+
+<%- include('./partials/footer') %>
