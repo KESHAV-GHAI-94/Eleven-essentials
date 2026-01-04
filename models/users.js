@@ -16,6 +16,10 @@ const UserSchema = mongoose.Schema({
         default:[]
     },
     contact:Number,
-    picture:String
+    picture:String,
+    createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 module.exports = mongoose.model("Users",UserSchema); 
