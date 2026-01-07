@@ -7,10 +7,19 @@ const UserSchema = mongoose.Schema({
     },
     email:String,
     password:String,
-    cart:{
-        type:Array,
-        default:[]
+    cart: [
+  {
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Products"
     },
+    quantity: {
+      type: Number,
+      default: 1
+    }
+  }
+]
+,
     orders:{
         type:Array,
         default:[]

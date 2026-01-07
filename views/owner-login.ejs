@@ -1,16 +1,69 @@
 <%- include('./partials/loginheader') %>
-    <div class="w-full h-screen flex px-20">
-        <div class="w-1/2 flex items-center justify-center h-screen">
-            <div class="w-full px-32">
-                <h4 class="text-2xl capitalize mb-5">Admin Access</h4>
-                <form action="/owners/login" method="post">
-                    <input class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                        type="email" placeholder="Email" name="email">
-                    <input class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                        type="password" placeholder="Password" name="password">
-                    <input class="px-5 rounded-full py-3 mt-2 bg-blue-500 text-white" type="submit" value="Login">
-                </form>
+<% if (error && error.length > 0) { %>
+  <div
+    id="flash-message"
+    class="absolute top-8 left-1/2 -translate-x-1/2 px-6 py-3 rounded-md bg-red-600 shadow-lg transition-opacity duration-500">
+    <span class="text-white font-medium">
+      <%= error[0] %>
+    </span>
+  </div>
+<% } %>
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+    
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-10">
+        
+        <!-- Title -->
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">
+            Admin Access
+        </h2>
+        <p class="text-center text-gray-500 mb-8">
+            Login to manage the dashboard
+        </p>
+
+        <!-- Form -->
+        <form action="/owners/login" method="post" class="space-y-4">
+            
+            <!-- Email -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Email Address
+                </label>
+                <input 
+                    type="email"
+                    name="email"
+                    placeholder="admin@example.com"
+                    required
+                    class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-200 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
             </div>
-        </div>
+
+            <!-- Password -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Password
+                </label>
+                <input 
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
+                    class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-200 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+            </div>
+
+            <!-- Button -->
+            <button 
+                type="submit"
+                class="w-full mt-4 py-3 rounded-full bg-blue-600 text-white font-semibold 
+                       hover:bg-blue-700 transition duration-300 shadow-md"
+            >
+                Login
+            </button>
+        </form>
+
     </div>
-    <%- include('./partials/footer') %>
+</div>
+
+<%- include('./partials/footer') %>

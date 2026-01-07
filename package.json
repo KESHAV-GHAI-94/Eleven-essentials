@@ -1,8 +1,10 @@
 {
   "name": "bagpack",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "node app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -20,6 +22,7 @@
     "express": "^5.2.1",
     "express-session": "^1.18.2",
     "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.0.0",
     "mongoose": "^9.1.1",
     "multer": "^2.0.2"
   }

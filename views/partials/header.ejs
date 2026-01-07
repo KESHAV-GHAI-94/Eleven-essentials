@@ -4,14 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ElevenEssentials</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
+<% var isloggedin = typeof loggedin!== "undefined"? isloggedin:true %>
+<% if(isloggedin) {%>
 <body class="font-['helvetica_now_display']">
-    <nav class="w-full fixed top-0 left-0 px-5 py-3 flex items-center justify-between bg-white shadow">
-    <h3 class="text-xl font-semibold">ElevenEssentials</h3>
+<nav class="w-full fixed top-0 left-0 px-6 py-3 flex items-center justify-between bg-white shadow">
+    
+    <!-- Logo -->
+    <h3 class="text-xl font-semibold text-indigo-600">
+        ElevenEssentials
+    </h3>
+
+    <!-- Nav Links -->
+    <div class="flex items-center gap-6 text-sm font-medium">
+        <a href="/shop" class="text-gray-700 hover:text-indigo-600 transition">
+            Shop
+        </a>
+
+        <a href="/cart" class="text-gray-700 hover:text-indigo-600 transition flex items-center gap-1">
+            <i class="ri-shopping-cart-line"></i> Cart
+        </a>
+
+        <a href="/shop" class="text-gray-700 hover:text-indigo-600 transition">
+            My Account
+        </a>
+    </div>
 
     <!-- Logout Button -->
     <a 
@@ -21,3 +41,5 @@
         Logout
     </a>
 </nav>
+
+<% } %>

@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const config = require("config");
 const dbgr = require("debug")("development:mongoose");
-mongoose.connect(`${config.get("MONGODB_URI")}/BAGPACK`)
-.then(()=>{
-    dbgr("your db server is live");
-})
-.catch(function(err){
-    dbgr(err);
-})
+console.log("MONGO_URI:", process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB Connected");})
+
 module.exports = mongoose; 

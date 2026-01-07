@@ -1,102 +1,134 @@
-<%- include('./partials/header') %>
+<%- include('./partials/adminheader') %>
 
-<div class="min-h-screen flex justify-center items-start px-20 py-16">
+<div class="min-h-screen bg-gray-100 pt-16">
+  <div class="max-w-4xl mx-auto px-6 py-10">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-semibold text-gray-800">
+        Edit Product
+      </h1>
 
-  <div class="w-full max-w-xl">
-    <h1 class="text-2xl font-semibold mb-6">Edit Product</h1>
+      <a
+        href="/owners/products"
+        class="text-gray-600 hover:text-black transition"
+      >
+        ← Back to Products
+      </a>
+    </div>
 
-    <form
-      action="/owners/products/update/<%= product._id %>"
-      method="POST"
-      class="flex flex-col gap-4"
-    >
+    <div class="bg-white rounded-xl shadow p-8">
+      <form
+        action="/owners/products/update/<%= product._id %>"
+        method="POST"
+        class="space-y-8"
+      >
+        <section>
+          <h2 class="text-lg font-semibold mb-4 text-gray-700">
+            Product Information
+          </h2>
 
-      <!-- NAME -->
-      <div>
-        <label class="block mb-1">Product Name</label>
-        <input
-          type="text"
-          name="name"
-          value="<%= product.name %>"
-          class="w-full border px-3 py-2"
-          required
-        />
-      </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">
+                Product Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value="<%= product.name %>"
+                class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
 
-      <!-- PRICE -->
-      <div>
-        <label class="block mb-1">Price</label>
-        <input
-          type="number"
-          name="price"
-          value="<%= product.price %>"
-          class="w-full border px-3 py-2"
-          required
-        />
-      </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">
+                Price (₹)
+              </label>
+              <input
+                type="number"
+                name="price"
+                value="<%= product.price %>"
+                class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
 
-      <!-- DISCOUNT -->
-      <div>
-        <label class="block mb-1">Discount (%)</label>
-        <input
-          type="number"
-          name="discount"
-          value="<%= product.discount %>"
-          class="w-full border px-3 py-2"
-        />
-      </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">
+                Discount (%)
+              </label>
+              <input
+                type="number"
+                name="discount"
+                value="<%= product.discount %>"
+                class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        </section>
 
-      <!-- COLORS -->
-      <div>
-        <label class="block mb-1">Background Color</label>
-        <input
-          type="text"
-          name="bgcolor"
-          value="<%= product.bgcolor %>"
-          class="w-full border px-3 py-2"
-        />
-      </div>
+        <section>
+          <h2 class="text-lg font-semibold mb-4 text-gray-700">
+            Appearance
+          </h2>
 
-      <div>
-        <label class="block mb-1">Panel Color</label>
-        <input
-          type="text"
-          name="panelcolor"
-          value="<%= product.panelcolor %>"
-          class="w-full border px-3 py-2"
-        />
-      </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-medium mb-2">
+                Background Color
+              </label>
+              <input
+                type="color"
+                name="bgcolor"
+                value="<%= product.bgcolor %>"
+                class="w-full h-10 rounded cursor-pointer"
+              />
+            </div>
 
-      <div>
-        <label class="block mb-1">Text Color</label>
-        <input
-          type="text"
-          name="textcolor"
-          value="<%= product.textcolor %>"
-          class="w-full border px-3 py-2"
-        />
-      </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">
+                Panel Color
+              </label>
+              <input
+                type="color"
+                name="panelcolor"
+                value="<%= product.panelcolor %>"
+                class="w-full h-10 rounded cursor-pointer"
+              />
+            </div>
 
-      <!-- BUTTONS -->
-      <div class="flex gap-4 mt-6">
-        <button
-          type="submit"
-          class="px-6 py-2 bg-black text-white"
-        >
-          Update Product
-        </button>
+            <div>
+              <label class="block text-sm font-medium mb-2">
+                Text Color
+              </label>
+              <input
+                type="color"
+                name="textcolor"
+                value="<%= product.textcolor %>"
+                class="w-full h-10 rounded cursor-pointer"
+              />
+            </div>
+          </div>
+        </section>
 
-        <a
-          href="/owners/products"
-          class="px-6 py-2 border"
-        >
-          Cancel
-        </a>
-      </div>
+        <div class="flex justify-end gap-4 pt-6 border-t">
+          <a
+            href="/owners/products"
+            class="px-6 py-2 rounded-lg border hover:bg-gray-100 transition"
+          >
+            Cancel
+          </a>
 
-    </form>
+          <button
+            type="submit"
+            class="px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
+          >
+            Update Product
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-
 </div>
 
 <%- include('./partials/footer') %>

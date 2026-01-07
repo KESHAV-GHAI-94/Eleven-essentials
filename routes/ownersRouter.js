@@ -25,14 +25,12 @@ if (process.env.NODE_ENV === "development") {
     res.send(owner);
   });
 }
-
 /* OWNER LOGIN PAGE */
 router.get("/", (req, res) => {
   res.render("owner-login", {
     error: req.flash("error"),
   });
 });
-
 /* OWNER LOGIN */
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -42,7 +40,6 @@ router.post("/login", async (req, res) => {
     req.flash("error", "Invalid credentials");
     return res.redirect("/owners");
   }
-
   const match = await bcrypt.compare(password, owner.password);
   if (!match) {
     req.flash("error", "Invalid credentials");
@@ -104,6 +101,7 @@ router.post("/products/update/:ProductId", isOwner, async (req, res) => {
 /* LOGOUT */
 router.get("/logout", (req, res) => {
   res.clearCookie("owner_token");
+  res.clearCookie("connect.sid");
   res.redirect("/owners");
 });
 router.get("/users", async (req, res) => {

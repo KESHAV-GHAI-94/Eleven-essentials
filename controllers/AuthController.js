@@ -39,6 +39,7 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.loginUser= async(req,res)=>{
     let {email,password} = req.body;
+    if (!email || !password) { req.flash("error", "Email and password are required"); return res.redirect("/"); }
     let user = await Users.findOne({email});
     if(!user){
         req.flash("error", "User not found. Please sign up first.");
@@ -46,12 +47,14 @@ module.exports.loginUser= async(req,res)=>{
     bcrypt.compare(password,user.password,(err,result)=>{
         if(result){
             let token= generateToken(user);
-            res.cookie("token",token);
-            req.flash("success", "login successfully");
+            res.cookie("token", token, {
+              httpOnly: true,
+              path: "/"
+            });
             res.redirect("/shop");
         }
         else{
-            req.flash("error", "User already exists");
+            req.flash("error", "invalid credentials");
             return res.redirect("/");
         }
     })
@@ -59,18 +62,32 @@ module.exports.loginUser= async(req,res)=>{
 
 module.exports.shopPage = async (req, res) => {
     try {
-        const products = await Products.find(); // fetch from DB
+        const products = await Products.find();
+
+        const success = req.flash("success");
+        const error = req.flash("error");
+
         res.render("shop", {
-            products // 👈 THIS IS REQUIRED
+            products,
+            success,
+            error,
+            isloggedin: true,
+            user: req.user || null
         });
     } catch (err) {
         console.error(err);
-        res.send("Error loading shop page");
+        req.flash("error", "Error loading shop page");
+        res.redirect("/");
     }
 };
+
 module.exports.logout = (req, res) => {
-    res.clearCookie("token"); 
-    res.clearCookie("owner_token");  // ✅ clear cookie by name
+    res.clearCookie("token", {
+  httpOnly: true,
+  path: "/"
+});
+ 
+    res.clearCookie("owner_token");
     req.flash("success", "Logged out successfully");
     res.redirect("/");
 };

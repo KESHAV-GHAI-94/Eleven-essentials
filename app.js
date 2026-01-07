@@ -1,3 +1,4 @@
+require("dotenv").config({quiet:true});
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -13,7 +14,6 @@ const ownerRouter=require("./routes/ownersRouter");
 const userRouter=require("./routes/usersRouter");
 const productsRouter=require("./routes/productsRouter");
 const indexRouter = require("./routes/indexRouter");
-require("dotenv").config({quiet:true});
 // console.log(process.env.EXPRESS_SESSION_SECRET);
 //middlewares
 app.use(cookieParser());
@@ -36,6 +36,7 @@ app.use("/users",userRouter);
 app.set("view engine","ejs");
 
 // running server port
-app.listen(3000,()=>{
-    console.log("your server is running on localhost:3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
 });

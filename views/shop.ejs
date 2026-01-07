@@ -1,4 +1,25 @@
 <%- include('./partials/header') %>
+<% if (success && success.length > 0) { %>
+  <div
+    id="toast"
+    class="fixed top-24 right-6 z-50
+           px-6 py-4 rounded-lg bg-green-600 text-white shadow-lg
+           transform translate-x-full transition-all duration-500">
+    <%= success[0] %>
+  </div>
+<% } %>
+
+<% if (error && error.length > 0) { %>
+  <div
+    id="toast"
+    class="fixed top-24 right-6 z-50
+           px-6 py-4 rounded-lg bg-red-600 text-white shadow-lg
+           transform translate-x-full transition-all duration-500">
+    <%= error[0] %>
+  </div>
+<% } %>
+
+
     <div class="w-full h-screen flex items-start px-20 py-20">
         <div class="w-[25%] flex h-screen flex-col items-start">
             <div class="flex items-center gap-2">
@@ -45,7 +66,7 @@
           <h3><%= product.name %></h3>
           <h4>₹ <%= product.price %></h4>
         </div>
-        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white">
+        <a href="/addtocart/<%= product._id %>" class="w-7 h-7 flex items-center justify-center rounded-full bg-white">
           <i class="ri-add-line"></i>
         </a>
       </div>
@@ -55,7 +76,22 @@
 
 </div>
 
-</div>
+</div><script>
+  const toast = document.getElementById("toast");
+
+  if (toast) {
+    // slide in
+    setTimeout(() => {
+      toast.classList.remove("translate-x-full");
+    }, 100);
+
+    // slide out
+    setTimeout(() => {
+      toast.classList.add("translate-x-full");
+    }, 2500);
+  }
+</script>
+
 
         
     </div>
