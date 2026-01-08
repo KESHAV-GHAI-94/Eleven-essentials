@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {
 
   res.redirect("/owners/products");
 });
-router.get("/create",(req,res)=>{
+router.get("/create",isOwner,(req,res)=>{
     let success =req.flash("sucess");
     res.render("createproducts",{success});
 })
