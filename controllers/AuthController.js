@@ -37,28 +37,44 @@ module.exports.registerUser = async (req, res) => {
   }
 };
 
-module.exports.loginUser= async(req,res)=>{
-    let {email,password} = req.body;
-    if (!email || !password) { req.flash("error", "Email and password are required"); return res.redirect("/"); }
-    let user = await Users.findOne({email});
-    if(!user){
-        req.flash("error", "User not found. Please sign up first.");
-        return res.redirect("/");}
-    bcrypt.compare(password,user.password,(err,result)=>{
-        if(result){
-            let token= generateToken(user);
-            res.cookie("token", token, {
-              httpOnly: true,
-              path: "/"
-            });
-            res.redirect("/shop");
-        }
-        else{
-            req.flash("error", "invalid credentials");
-            return res.redirect("/");
-        }
-    })
-}
+module.exports.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      req.flash("error", "Email and password are required");
+      return res.redirect("/");
+    }
+
+    const user = await Users.findOne({ email });
+    if (!user) {
+      req.flash("error", "User not found. Please sign up first.");
+      return res.redirect("/");
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      req.flash("error", "Invalid credentials");
+      return res.redirect("/");
+    }
+
+    const token = generateToken(user);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false  
+    });
+
+    return res.redirect("/shop");
+
+  } catch (err) {
+    console.error("LOGIN ERROR ", err);
+    req.flash("error", "Login failed");
+    return res.redirect("/");
+  }
+};
+
 
 module.exports.shopPage = async (req, res) => {
     try {

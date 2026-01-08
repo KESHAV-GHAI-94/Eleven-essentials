@@ -8,14 +8,11 @@ const isloggedin= require("../middleware/isloggedin")
 router.get("/",(req,res)=>{
     let error = req.flash("error");
     let success = req.flash("success");
-    res.clearCookie(owners.token);
+    res.clearCookie("token");
     res.clearCookie("connect.sid");
     res.render("index",{error,success,isloggedin:false});
 })
-router.get("/shop",shopPage,(req,res)=>{
-    
-    let success = req.flash("success")
-});
+router.get("/shop",shopPage)
 router.get("/logout",logout);
 router.get("/cart",isloggedin,async (req,res)=>{
     res.render("cart")
