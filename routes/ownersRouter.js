@@ -104,7 +104,7 @@ router.get("/logout", (req, res) => {
   res.clearCookie("connect.sid");
   res.redirect("/owners");
 });
-router.get("/users", async (req, res) => {
+router.get("/users",isOwner, async (req, res) => {
   try {
     const users = await Users.find().sort({ createdAt: -1 });
     res.render("owners-users", { users });
