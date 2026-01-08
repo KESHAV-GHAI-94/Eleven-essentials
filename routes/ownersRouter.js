@@ -7,7 +7,7 @@ const Users = require("../models/users");
 const isOwner = require("../middleware/isOwner");
 const owners = require("../models/owners");
 const Products = require("../models/products");
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "production") {
   router.post("/create", async (req, res) => {
     const existingOwner = await owners.find();
     if (existingOwner.length > 0) {
