@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const {generateToken} = require("../utils/generatetoken");
 const Products = require("../models/products");
-
+// create user
 module.exports.registerUser = async (req, res) => {
   try {
     const { email, password, Full_Name } = req.body;
@@ -36,7 +36,41 @@ module.exports.registerUser = async (req, res) => {
     res.redirect("/");
   }
 };
+//initial page setup
+module.exports.loginpage = (req,res)=>{
+    let error = req.flash("error");
+    let success = req.flash("success");
+    res.clearCookie("token");
+    res.clearCookie("connect.sid");
+    res.render("index",{error,success,isloggedin:false});
+};
+//addmore product
+module.exports.addmore = async (req, res) => {
+  try {
+    const user = await Users.findOne({ email: req.user.email });
 
+    const existingItem = user.cart.find(
+      item => item.product && item.product.toString() === req.params.productid
+    );
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      user.cart.push({
+        product: req.params.productid,
+        quantity: 1
+      });
+    }
+    await user.save();
+    req.flash("success", "Product added to cart");
+    res.redirect("/shop");
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Something went wrong");
+    res.redirect("/shop");
+  }
+};
+// user login
 module.exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -74,8 +108,24 @@ module.exports.loginUser = async (req, res) => {
     return res.redirect("/");
   }
 };
-
-
+// user fetching cart 
+module.exports.cartdata =async (req, res) => {
+  const user = await Users
+    .findOne({ email: req.user.email })
+    .populate("cart.product");
+    console.log(user.cart);
+      let totalMRP = 0;
+      let totalDiscount = 0;
+      const pffee= 20;
+      user.cart.forEach(cart => {
+        if (cart.product) {
+            totalMRP += cart.product.price * cart.quantity;
+            totalDiscount += (cart.product.discount * cart.product.price * cart.quantity) / 100;
+          }});
+          const bill = totalMRP-totalDiscount+pffee;
+  res.render("cart", { user,totalMRP,totalDiscount,bill});
+};
+//shop page for login user
 module.exports.shopPage = async (req, res) => {
     try {
         const products = await Products.find();
@@ -96,7 +146,7 @@ module.exports.shopPage = async (req, res) => {
         res.redirect("/");
     }
 };
-
+// logout api
 module.exports.logout = (req, res) => {
     res.clearCookie("token", {
   httpOnly: true,

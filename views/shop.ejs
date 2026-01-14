@@ -1,98 +1,124 @@
 <%- include('./partials/header') %>
-<% if (success && success.length > 0) { %>
+
+<!-- TOAST -->
+<% if ((success && success.length > 0) || (error && error.length > 0)) { %>
   <div
     id="toast"
-    class="fixed top-24 right-6 z-50
-           px-6 py-4 rounded-lg bg-green-600 text-white shadow-lg
+    class="fixed top-24 right-4 md:right-6 z-50
+           px-4 md:px-6 py-3 md:py-4 rounded-lg
+           <%= success ? 'bg-green-600' : 'bg-red-600' %>
+           text-white shadow-lg
            transform translate-x-full transition-all duration-500">
-    <%= success[0] %>
+    <%= success ? success[0] : error[0] %>
   </div>
 <% } %>
 
-<% if (error && error.length > 0) { %>
-  <div
-    id="toast"
-    class="fixed top-24 right-6 z-50
-           px-6 py-4 rounded-lg bg-red-600 text-white shadow-lg
-           transform translate-x-full transition-all duration-500">
-    <%= error[0] %>
+<!-- MAIN -->
+<div class="min-h-screen bg-gray-100 px-4 md:px-20 py-8 md:py-20">
+
+  <div class="flex flex-col md:flex-row gap-8">
+
+    <!-- SIDEBAR -->
+    <aside class="w-full md:w-[25%] bg-white rounded-xl shadow p-5 space-y-8">
+
+      <!-- SORT -->
+      <div>
+        <h3 class="font-semibold mb-2">Sort by</h3>
+        <form action="/shop">
+          <select
+            class="w-full border rounded px-3 py-2 focus:outline-none"
+            name="sortby">
+            <option value="popular">Popular</option>
+            <option value="newest">Newest</option>
+          </select>
+        </form>
+      </div>
+
+      <!-- COLLECTIONS -->
+      <div>
+        <h3 class="font-semibold mb-3">Collections</h3>
+        <div class="space-y-2 text-gray-600">
+          <a href="#" class="block hover:text-black">New Collection</a>
+          <a href="#" class="block hover:text-black">All Products</a>
+          <a href="#" class="block hover:text-black">Discounted</a>
+        </div>
+      </div>
+
+      <!-- FILTER -->
+      <div>
+        <h3 class="font-semibold mb-3">Filter by</h3>
+        <div class="space-y-2 text-gray-600">
+          <a href="#" class="block hover:text-black">Availability</a>
+          <a href="#" class="block hover:text-black">Discount</a>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- PRODUCTS -->
+    <section class="w-full md:w-[75%]">
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+
+        <% products.forEach(product => { %>
+
+          <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+
+            <!-- IMAGE -->
+            <div
+              class="h-44 sm:h-52 flex items-center justify-center"
+              style="background-color:<%= product.bgcolor %>;"
+            >
+              <% if (product.images) { %>
+                <img
+                  src="data:image/jpeg;base64,<%= product.images.toString('base64') %>"
+                  class="h-full object-contain"
+                  alt="product image"
+                />
+              <% } else { %>
+                <p class="text-sm text-gray-500">No image</p>
+              <% } %>
+            </div>
+
+            <!-- INFO -->
+            <div
+              class="flex justify-between items-center px-4 py-3"
+              style="background-color:<%= product.panelcolor %>; color:<%= product.textcolor %>;"
+            >
+              <div>
+                <h3 class="font-semibold text-sm sm:text-base">
+                  <%= product.name %>
+                </h3>
+                <p class="text-sm">₹ <%= product.price %></p>
+              </div>
+
+              <a
+                href="/addtocart/<%= product._id %>"
+                class="w-9 h-9 flex items-center justify-center
+                       rounded-full bg-white shadow hover:scale-105 transition">
+                <i class="ri-add-line"></i>
+              </a>
+            </div>
+
+          </div>
+
+        <% }) %>
+
+      </div>
+
+    </section>
+
   </div>
-<% } %>
-
-
-    <div class="w-full h-screen flex items-start px-20 py-20">
-        <div class="w-[25%] flex h-screen flex-col items-start">
-            <div class="flex items-center gap-2">
-                <h3>sort by</h3>
-                <form action="/shop">
-                    <select class="border-[1px] px-2 py-1" name="sortby" id="">
-                        <option value="popular">Popular</option>
-                        <option value="newest">Newest</option>
-                    </select>
-                </form>
-            </div>
-            <div class="flex flex-col mt-20">
-                <a class="block w-fit mb-2" href="">New Collection</a>
-                <a class="block w-fit mb-2" href="">All Products</a>
-                <a class="block w-fit mb-2" href="">Discounted Products</a>
-            </div>
-            <div class="mt-32">
-                <a class="block w-fit mb-2" href="">Filter by :</a>
-                <a class="block w-fit mb-2" href="">Availability</a>
-                <a class="block w-fit mb-2" href="">Discount</a>
-            </div>
-        </div>
-        <div class="w-[75%] h-screen">
-            <div class="grid grid-cols-4 gap-6">
-
-  <% products.forEach(function(product){ %>
-    <div class="w-full">
-
-      <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
-        <% if (product.images) { %>
-          <img
-            src="data:image/jpeg;base64,<%= product.images.toString('base64') %>"
-            class="w-7/8 h-full object"
-            alt="product image"
-          />
-        <% } else { %>
-          <p class="text-sm text-gray-500">No image</p>
-        <% } %>
-      </div>
-
-      <div
-        class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
-        <div>
-          <h3><%= product.name %></h3>
-          <h4>₹ <%= product.price %></h4>
-        </div>
-        <a href="/addtocart/<%= product._id %>" class="w-7 h-7 flex items-center justify-center rounded-full bg-white">
-          <i class="ri-add-line"></i>
-        </a>
-      </div>
-
-    </div>
-  <% }) %>
 
 </div>
 
-</div><script>
+<!-- TOAST SCRIPT -->
+<script>
   const toast = document.getElementById("toast");
-
   if (toast) {
-    // slide in
-    setTimeout(() => {
-      toast.classList.remove("translate-x-full");
-    }, 100);
-
-    // slide out
-    setTimeout(() => {
-      toast.classList.add("translate-x-full");
-    }, 2500);
+    setTimeout(() => toast.classList.remove("translate-x-full"), 100);
+    setTimeout(() => toast.classList.add("translate-x-full"), 2500);
   }
 </script>
 
-
-        
-    </div>
-    <%- include('./partials/footer') %>
+<%- include('./partials/footer') %>
